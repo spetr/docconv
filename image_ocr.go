@@ -28,7 +28,7 @@ func ConvertImage(r io.Reader) (string, map[string]string, error) {
 
 	gs := gosseract.NewClient()
 	defer gs.Close()
-	gs.SetImage(file.Name())
+	gs.SetImage(f.Name())
 	body, err := gs.Text()
 	if err != nil {
 		return "", nil, fmt.Errorf("tesseract error: %v", err)
