@@ -25,22 +25,17 @@ func ConvertImage(r io.Reader) (string, map[string]string, error) {
 	defer f.Done()
 
 	meta := make(map[string]string)
-	out := make(chan string, 1)
 
-	// TODO: Why is this done in a separate goroutine when ConvertImage blocks until it returns?
-	go func(file *LocalFile) {
-		gs := gosseract.NewClient()
-		defer gs.Close()
-		gs.SetImage(file.Name())
-		body, err := gs.Text()
-		if err != nil {
-			fmt.Println("Tesseract error:", err)
-		}
-		fmt.Println(body)
-		out <- body
-	}(f)
+	gs := gosseract.NewClient()
+	defer gs.Close()
+	gs.SetImage(file.Name())
+	body, err := gs.Text()
+	if err != nil {
+		return "", nil, fmt.Errorf("tesseract error: %v", err)
+	}
+	fmt.Println(body)
 
-	return <-out, meta, nil
+	return body, meta, nil
 }
 
 // SetImageLanguages sets the languages parameter passed to gosseract.
