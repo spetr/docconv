@@ -7,19 +7,19 @@ import (
 	"time"
 )
 
-// Meta data
+// MetaResult ...
 type MetaResult struct {
 	meta map[string]string
 	err  error
 }
 
+// BodyResult ...
 type BodyResult struct {
 	body string
 	err  error
 }
 
-// Convert PDF
-
+// ConvertPDFText converts an Adobe Acrobat PDF file to text.
 func ConvertPDFText(path string) (BodyResult, MetaResult, error) {
 	metaResult := MetaResult{meta: make(map[string]string)}
 	bodyResult := BodyResult{}
