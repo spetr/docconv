@@ -29,10 +29,11 @@ func ConvertImage(r io.Reader) (string, map[string]string, error) {
 
 	// TODO: Why is this done in a separate goroutine when ConvertImage blocks until it returns?
 	go func(file *LocalFile) {
-		langs.RLock()
-		body := gosseract.Must(gosseract.Params{Src: file.Name(), Languages: langs.lang})
-		langs.RUnlock()
-		out <- string(body)
+		client := gosseract.NewClient()
+		defer client.Close()
+		client.SetImage(file.Name())
+		body, _ := client.Text()
+		out <- body
 	}(f)
 
 	return <-out, meta, nil
