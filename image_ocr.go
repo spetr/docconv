@@ -18,7 +18,7 @@ var langs = struct {
 // ConvertImage converts images to text.
 // Requires gosseract.
 func ConvertImage(r io.Reader) (string, map[string]string, error) {
-	f, err := NewLocalFile(r, "/tmp", "sajari-convert-")
+	f, err := NewLocalFile(r, "/tmp", "docconv-")
 	if err != nil {
 		return "", nil, fmt.Errorf("error creating local file: %v", err)
 	}
@@ -33,7 +33,6 @@ func ConvertImage(r io.Reader) (string, map[string]string, error) {
 	if err != nil {
 		return "", nil, fmt.Errorf("tesseract error: %v", err)
 	}
-	fmt.Println(body)
 
 	return body, meta, nil
 }
